@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import json as simplejson
 import sqlite3
@@ -10,11 +10,15 @@ cursor = connection.cursor()
 query = "Select * from characters"
 results = cursor.execute(query)
 
+names = list(map(lambda x: x[0], cursor.description))
+
 JSON = []
- 
 for row in results:
-    JSON.append({'id': row[0],'fname': row[1],'lmame': row[2],'phone': row[3]})
+    r = {}
+    for i in range(len(names)):
+        r[names[i]] = row[i]
+    JSON.append(r)
 
 connection.close()
 
-print simplejson.dumps(JSON)
+print(simplejson.dumps(JSON))
